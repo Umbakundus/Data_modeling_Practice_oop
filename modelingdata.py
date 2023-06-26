@@ -52,10 +52,10 @@ class Payout:
     hourly:str
     efort_based:str
 
-    def __init__(self, monthly:str, hourly:str, efort_based:str):
+    def __init__(self, monthly:str):
         self.monthly = monthly
-        self.hourly = hourly
-        self.efort_based = efort_based
+        self.hourly = None
+        self.efort_based = None
 
 class TypeOfContract(Enum):
     HPP = 1
@@ -160,10 +160,10 @@ class Product:
         self.is_fair_trade = is_fair_trade
 
 class Purchase:
-    product:Product
+    product:list[Product]
     date:str
 
-    def __init__(self, product:Product, date:str):
+    def __init__(self, product:list[Product], date:str):
         self.product = product
         self.date = date
 
@@ -190,3 +190,105 @@ class Sale:
         self.date = date
         self.product = product
         self.employee = employee
+
+class Store:
+    address:Address
+    brand:str
+    name:str
+    employees:list[Employee]
+    products:list[Product]
+    regularcustomers:list[RegularCustomer]
+    purchases:list[Purchase]
+
+    def __init__(self, address:Address, brand:str, name:str, ) -> None:
+        
+        self.address = address
+        self.brand = brand
+        self.name = name
+        self.employees = []
+        self.products = []
+        self.regularcustomers = []
+        self.sales = []
+
+    def add_employee(self, employee:Employee):
+        self.employees.append(employee)
+
+    def add_product(self, product:Product):
+        self.products.append(product)
+
+    def add_customer(self, customer:RegularCustomer):
+        self.regularcustomers.append(customer)
+
+    def add_sale(self, sale:Sale):
+        self.sales.append(sale)
+
+class Salary:
+    employee:Employee
+    date:str
+    amount:str
+
+    def __init__(self, employee:Employee, date:str, amount:str) -> None:
+        self.employee = employee
+        self.date = date
+        self.amount = amount
+
+
+
+
+
+employee1_name = Name("Anna", "Magdalenka", "Ferenciova")
+employee1_bank = BankNumber("45456456", "4545", "54545", "4545", "5454")
+employee1_address = Address("Brno", "Raklovska", "61800", "65")
+employee1_payout = Payout("656")
+employee1_typeofcontract = TypeOfContract(1)
+
+employee2_name = Name("Ani", "Magdalenka", "Ferenciova")
+employee2_bank = BankNumber("45456", "46665", "5565", "4555", "6654")
+employee2_address = Address("Praha", "Raklovska", "12000", "65")
+employee2_payout = Payout("888")
+
+employee1 = Employee(employee1_name, employee1_bank, "raklo@email.cz", "655", employee1_address, True, Coop_type.INTERN, 
+                     "manager", "28.2.2022", Gender.FEMALE, employee1_payout, TypeOfContract.HPP, False, False, Ozp.ONE)
+
+employee2 = Employee(employee2_name, employee2_bank, "rsdsdo@email.cz", "656", employee2_address, True, Coop_type.INTERN, 
+                     "ceo", "28.2.2020", Gender.MALE, employee2_payout, TypeOfContract.HPP, False, False, Ozp.ONE)
+
+size1 = Size(10,20,30)
+size2 = Size(30,20,10)
+perishability1 = Perishability(True, "28.12.2023")
+perishability2 = Perishability(True, "27.12.2021")
+
+product1 = Product("22", 3, "587", "mrtkos","nope", Type.GROCERIES, "6", size1, perishability1, True)
+product2 = Product("24", 6, "664", "mrtkoska","nope", Type.GROCERIES, "7", size2, perishability2, True)
+
+purchase1 = Purchase("28.6.2022", product1)
+purchase2 = Purchase("24.5.2023", product2)
+
+cus_name1 = Name("Marian", "", "Hoss")
+cus_name2 = Name("Marta", "", "Mala")
+
+customer1 = RegularCustomer(purchase1, cus_name1, "sds@gmail.com", "54", "9562648")
+customer2 = RegularCustomer(purchase2, cus_name2, "ssadasd@gmail.com", "51", "95695656")
+
+sale1 = Sale("24.11.2022", product1, employee1)
+sale2 = Sale("24.12.2021", product2, employee2)
+
+address3 = Address("Prague", "stromovka", "120 00", "54")
+
+
+store = Store(address3, "Ultimate_shop", "Ultimated")
+store.add_product(product1)
+store.add_product(product2)
+store.add_customer(customer1)
+store.add_customer(customer2)
+store.add_employee(employee1)
+store.add_employee(employee2)
+store.add_sale(sale1)
+store.add_sale(sale2)
+
+
+salary1 = Salary(employee1, "15.5.2023", "30000")
+salary2 = Salary(employee2, "15.5.2023", "60000")
+
+
+
